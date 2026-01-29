@@ -1,0 +1,22 @@
+# OS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Go build artifacts
+bin/
+pkg/
+*.exe
+*.test
+
+# Coverage
+coverage.out
+
+# Env / secrets
+.env
+.env.*
+
+# Logs
+*.log

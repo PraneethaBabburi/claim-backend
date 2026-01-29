@@ -46,6 +46,31 @@ func (h *ClaimHandler) GetAllClaims(c *gin.Context) {
 	claim := h.claimService.GetAllClaims()
 	c.JSON(http.StatusOK, claim)
 }
-func (h *ClaimHandler) MoveToReview(c *gin.Context){
-	
+func (h *ClaimHandler) MoveToReview(c *gin.Context) {
+	id := c.Param("id")
+	claim, err := h.claimService.MoveToReview(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, claim)
+
+}
+func (h *ClaimHandler) ApproveClaim(c *gin.Context) {
+	id := c.Param("id")
+	claim, err := h.claimService.ApproveClaim(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, claim)
+}
+func (h *ClaimHandler) DenyClaim(c *gin.Context) {
+	id := c.Param("id")
+	claim, err := h.claimService.DenyClaim(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, claim)
 }

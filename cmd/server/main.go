@@ -3,6 +3,9 @@ package main
 import (
 	"claims-backend/internal/handler"
 	"claims-backend/internal/repository"
+	"database/sql"
+
+	_ "github.com/go-sql-driver/mysql"
 
 	"claims-backend/internal/service"
 
@@ -10,8 +13,15 @@ import (
 )
 
 func main() {
+	db, err := sql.Open(
+		"mysql",
+		"root:Praneetha@327@tcp(127.0.0.1:3306)/claims_db?parseTime=true",
+	)
+	if err != nil {
+		panic(err)
+	}
 	r := gin.Default()
-	repo := repository.NewClaimRespository()
+	repo := repository.NewMySQLClaimRepository(db)
 	claimService := service.NewClaimService(repo)
 	claimHandler := handler.NewClaimHandler(claimService)
 

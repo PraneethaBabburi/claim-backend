@@ -2,6 +2,13 @@ package repository
 
 import "claims-backend/internal/model"
 
+// type ClaimRepository interface {
+// 	Save(claim model.Claim) error
+// 	FindByID(id string) (*model.Claim, error)
+// 	FindAll() ([]model.Claim, error)
+// 	Update(claim model.Claim) error
+// }
+
 type ClaimRepository struct {
 	data map[string]model.Claim
 }

@@ -2,7 +2,7 @@ package handler
 
 import (
 	"claims-backend/internal/service"
-	"errors"
+
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -34,9 +34,9 @@ func (h *ClaimHandler) CreateClaim(c *gin.Context) {
 
 func (h *ClaimHandler) GetClaimByID(c *gin.Context) {
 	id := c.Param("id")
-	claim, exists := h.claimService.GetClaimByID(id)
-	if !exists {
-		c.JSON(http.StatusNotFound, gin.H{"error": errors.New("Invalid ID")})
+	claim, err := h.claimService.GetClaimByID(id)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
 	}
 	c.JSON(http.StatusOK, claim)

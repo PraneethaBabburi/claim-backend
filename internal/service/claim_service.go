@@ -10,10 +10,10 @@ import (
 )
 
 type ClaimService struct {
-	repo *repository.ClaimRepository
+	repo *repository.MySQLClaimRepository
 }
 
-func NewClaimService(repo *repository.ClaimRepository) *ClaimService {
+func NewClaimService(repo *repository.MySQLClaimRepository) *ClaimService {
 	return &ClaimService{
 		repo: repo,
 	}
@@ -32,19 +32,19 @@ func (s *ClaimService) CreateClaim(UserID, ClaimType string, amount float64) *mo
 	return &claim
 }
 
-func (s *ClaimService) GetClaimByID(id string) (*model.Claim, bool) {
-	claim, exists := s.repo.FindByID(id)
-	if !exists {
-		return nil, false
+func (s *ClaimService) GetClaimByID(id string) (*model.Claim, error) {
+	claim, err := s.repo.FindByID(id)
+	if err!=nil {
+		return nil, err
 	}
-	return &claim, true
+	return &claim, nil
 }
 func (s *ClaimService) GetAllClaims() []model.Claim {
 	return s.repo.FindAll()
 }
 func (s *ClaimService) MoveToReview(id string) (*model.Claim, error) {
-	claim, exists := s.repo.FindByID(id)
-	if !exists {
+	claim, err := s.repo.FindByID(id)
+	if err!=nil {
 		return nil, errors.New("claim not found")
 	}
 	if claim.Status != model.StatusSubmitted {
@@ -55,8 +55,8 @@ func (s *ClaimService) MoveToReview(id string) (*model.Claim, error) {
 	return &claim, nil
 }
 func (s *ClaimService) ApproveClaim(id string) (*model.Claim, error) {
-	claim, exists := s.repo.FindByID(id)
-	if !exists {
+	claim, err := s.repo.FindByID(id)
+	if err!=nil {
 		return nil, errors.New("invalid ID")
 	}
 	if claim.Status != model.StatusUnderReview {
@@ -67,8 +67,8 @@ func (s *ClaimService) ApproveClaim(id string) (*model.Claim, error) {
 	return &claim, nil
 }
 func (s *ClaimService) DenyClaim(id string) (*model.Claim, error) {
-	claim, exists := s.repo.FindByID(id)
-	if !exists {
+	claim, err := s.repo.FindByID(id)
+	if err!=nil {
 		return nil, errors.New("invalid ID")
 	}
 	if claim.Status != model.StatusUnderReview {

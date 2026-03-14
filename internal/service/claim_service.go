@@ -10,10 +10,10 @@ import (
 )
 
 type ClaimService struct {
-	repo *repository.MySQLClaimRepository
+	repo repository.ClaimRepository
 }
 
-func NewClaimService(repo *repository.MySQLClaimRepository) *ClaimService {
+func NewClaimService(repo repository.ClaimRepository) *ClaimService {
 	return &ClaimService{
 		repo: repo,
 	}
